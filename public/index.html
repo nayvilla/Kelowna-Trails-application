@@ -70,8 +70,8 @@ SQAC114
         /* Add "https://api.ipify.org?format=json" to 
         get the IP Address of user*/
 
-	    var os = require("os");
-var hostname = os.hostname();
+	    
+var hostname = window. location. hostname;
 	    
         $(document).ready(()=>{
             $.getJSON("https://api.ipify.org?format=json",
