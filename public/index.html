@@ -62,6 +62,22 @@ SQAC114
          display: none;
       }
    </style>
+	 <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+ 
+    <script>
+        /* Add "https://api.ipify.org?format=json" to 
+        get the IP Address of user*/
+        $(document).ready(()=>{
+            $.getJSON("https://api.ipify.org?format=json",
+            function (data) {
+ 
+                // Displayin IP address on screen
+                $("#gfg").html(data.ip);
+            })
+        });
+    </script>
    <title>DevOps Bonus Project - CCTB</title>
 </head>
 
@@ -71,6 +87,7 @@ SQAC114
 
    <h1> Kelowna Wine Trails and Tours</h1>
    <h3> Student name / email </h3>
+	<p id="gfg"></p>
    <hr size="1" color="#b6bcbb"> <br />
 
    <div class="content" align="left">
