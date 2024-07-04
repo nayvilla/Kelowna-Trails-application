@@ -88,23 +88,23 @@ function CheckForGroupMemberInput() {
 * 
 */
 function CheckForGroupSizeInput() {
-	if (groupSize.value != "") {
-		if (isNaN(groupSize.value)) {
-			throw groupSize.value + " It's not a number";
-			groupSize.focus();
-		} else {
-			if (groupSize.value > 0) {
-				CalcGroupDiscount(groupSize.value);
-			} else {
-				throw "Size must be greater than 0";
-				groupSize.focus();
-			}
+    if (groupSize.value != "") {
+        if (isNaN(groupSize.value)) {
+            throw groupSize.value + " is not a number";
+            groupSize.focus();
+        } else {
+            if (groupSize.value > 0) {
+                CalcGroupDiscount(groupSize.value);
+            } else {
+                throw "Size must be greater than 0";
+                groupSize.focus();
+            }
 
-		}
-	} else {
-		throw "Please enter the size of your group travelers";
-		groupSize.focus();
-	}
+        }
+    } else {
+        throw "Please enter the size of your group travelers";
+        groupSize.focus();
+    }
 }
 
 /*
@@ -133,17 +133,18 @@ function CalcGroupDiscount(groupSize) {
 * 
 */
 function AddGroupMember(lastName, firstName) {
+    if (membersLst.options.length < groupSize.value) {
+        let option = document.createElement("option");
+        option.text = lastName + ", " + firstName;
+        membersLst.add(option);
 
-	let option = document.createElement("option");
-	option.text = lastName + ", " + firstName;
-	membersLst.add(option);
+        lastname.value = "";
+        firstname.value = "";
 
-	lastname.value = "";
-	firstname.value = "";
-
-	lastname.focus();
-
-
+        lastname.focus();
+    } else {
+        throw "The number of group members cannot exceed the specified group size.";
+    }
 }
 
 /*
@@ -151,9 +152,16 @@ function AddGroupMember(lastName, firstName) {
 * 
 */
 function RemoveGroupMember() {
+    if (membersLst.selectedIndex >= 0) {
+        membersLst.remove(membersLst.selectedIndex);
+    } else {
+        throw "Please select a group member to remove!";
+    }
 
-	throw "ERROR! You must work in this function before to send to Staging Environment!";
+    lastname.value = "";
+    firstname.value = "";
 
+    lastname.focus();
 }
 
 /*
