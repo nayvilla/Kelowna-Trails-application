@@ -7,7 +7,7 @@ pipeline{
  stages{
         stage('Building'){
             steps{
-                sh 'npm install -g firebase-tools'
+               // sh 'npm install -g firebase-tools'
                 echo 'Biulding...'
             }
         } 
