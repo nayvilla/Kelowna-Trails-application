@@ -16,18 +16,18 @@ pipeline{
         } 
         stage('Testing Environment'){
             steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.242.248.135 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
+            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.242.248.135 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
             input message: 'After testing. Do you want to continue with Staging Environment? (Click "Proceed" to continue)'
             }
         } 
         stage('Staging Environment'){
             steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@3.89.253.68 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
+            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@3.89.253.68 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
             }
         } 
         stage('Production Environment'){
             steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.162.101.210 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
+            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.162.101.210 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
             }
         } 
     }
