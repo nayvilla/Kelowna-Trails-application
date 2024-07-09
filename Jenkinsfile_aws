@@ -1,35 +1,34 @@
-// ARCHIVO PIPELINE PARA DEPLOY EN >iNSTANCIA AWS<
+// ARCHIVO PIPELINE PARA DEPLOY EN >INSTANCIA AWS<
 
-pipeline{
+pipeline {
     agent any
     environment {
-    //FIREBASE_DEPLOY_TOKEN = credentials('firebase-token')
-    TOKENAWS = credentials('ssh-production-key')
+        // FIREBASE_DEPLOY_TOKEN = credentials('firebase-token')
+        TOKENAWS = credentials('ssh-production-key')
     }
 
- stages{
-        stage('Building'){
-            steps{
-               // sh 'npm install -g firebase-tools'
-                echo 'Biulding...'
+    stages {
+        stage('Building') {
+            steps {
+                // sh 'npm install -g firebase-tools'
+                echo 'Building...'
             }
         } 
-        stage('Testing Environment'){
-            steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.242.248.135 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git pull"'
-            input message: 'After testing. Do you want to continue with Staging Environment? (Click "Proceed" to continue)'
+        stage('Testing Environment') {
+            steps {
+                sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.242.248.135 "sudo dnf update -y; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; if [ -d /var/www/html/.git ]; then cd /var/www/html; sudo git pull; else sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html; fi"'
+                input message: 'After testing. Do you want to continue with Staging Environment? (Click "Proceed" to continue)'
             }
         } 
-        stage('Staging Environment'){
-            steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@3.89.253.68 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
+        stage('Staging Environment') {
+            steps {
+                sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@3.89.253.68 "sudo dnf update -y; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; if [ -d /var/www/html/.git ]; then cd /var/www/html; sudo git pull; else sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html; fi"'
             }
         } 
-        stage('Production Environment'){
-            steps{
-            sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.162.101.210 "sudo dnf update; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; sudo rm -rf /var/www/html/*; sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html"'
+        stage('Production Environment') {
+            steps {
+                sh 'ssh -T -oStrictHostKeyChecking=no -i "$TOKENAWS" ec2-user@54.162.101.210 "sudo dnf update -y; sudo dnf install git -y; sudo dnf install -y httpd; sudo systemctl start httpd; if [ -d /var/www/html/.git ]; then cd /var/www/html; sudo git pull; else sudo git clone https://github.com/nayvilla/Kelowna-Trails-application /var/www/html; fi"'
             }
         } 
     }
-
 }
