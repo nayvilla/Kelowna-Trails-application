@@ -1,3 +1,5 @@
+// ARCHIVO PIPELINE PARA DEPLOY EN >FIREBASE<
+
 pipeline{
     agent any
     environment {
